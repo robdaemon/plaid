@@ -17,12 +17,8 @@ void terminal_initialize(void) {
   terminal_column = 0;
   terminal_color = make_color(COLOR_LIGHT_GRAY, COLOR_BLACK);
   terminal_buffer = VGA_MEMORY;
-  for(size_t y = 0; y < VGA_HEIGHT; y++) {
-    for(size_t x = 0; x < VGA_WIDTH; x++) {
-      const size_t index = y * VGA_WIDTH + x;
-      terminal_buffer[index] = make_vgaentry(' ', terminal_color);
-    }
-  }
+
+  terminal_clear();
 }
 
 void terminal_setcolor(uint8_t color) {
@@ -88,4 +84,16 @@ void terminal_move_cursor(void) {
   outportb(0x3D5, temp >> 8);
   outportb(0x3D4, 15);
   outportb(0x3D5, temp);
+}
+
+void terminal_clear(void) {
+  unsigned blank = 0x20 | (terminal_color << 8);
+
+  for(size_t i = 0; i < VGA_HEIGHT; i++) {
+	memsetw(terminal_buffer + i * VGA_WIDTH, blank, VGA_WIDTH);
+  }
+
+  terminal_row = 0;
+  terminal_column = 0;
+  terminal_move_cursor();
 }
