@@ -30,7 +30,7 @@ _start:
 
 	# Call the global constructors
 	call _init
-
+		
 	# Transfer control to the main kernel
 	call kernel_main
 
@@ -40,4 +40,19 @@ _start:
 .Lhang:
 	hlt
 	jmp .Lhang
+
+.global gdt_flush
+.extern gp
+gdt_flush:
+	lgdt gp 					# Load the GDT with our '_gp' which is a special pointer
+	movw $0x0010, %ax			# 0x10 is the offset in the GDT to our data segment
+	movw %ax, %ds
+	movw %ax, %es
+	movw %ax, %fs
+	movw %ax, %gs
+	movw %ax, %ss
+	ljmp $0x0008, $flush2		# 0x08 is the offset to our code segment, far jump!
+flush2:
+	ret							# back to the C code.
+
 .size _start, . - _start

@@ -4,6 +4,9 @@
 #include <stddef.h>
 #include <stdint.h>
 
+extern void gdt_flush();
+void gdt_install();
+
 static inline void outportb(uint16_t port, uint8_t val) {
   asm volatile ( "outb %0, %1" : : "a"(val), "Nd"(port) );
 }
