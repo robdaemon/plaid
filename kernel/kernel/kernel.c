@@ -11,4 +11,8 @@ void kernel_early(void) {
 
 void kernel_main(void) {
   printf("Hello world\nThis is the kernel.\nCan you hear me now?");
+
+  for (int i = 0; i < 50; i++) {
+	printf("Yet another line.\n");
+  }
 }
