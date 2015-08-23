@@ -1,5 +1,7 @@
 #include <stddef.h>
 #include <stdint.h>
+#include <string.h>
+#include <kernel/pc.h>
 
 struct gdt_entry {
   uint16_t limit_low;
@@ -35,7 +37,7 @@ void gdt_set_gate(int num, uint32_t base, uint32_t limit, uint8_t access, uint8_
 
 void gdt_install() {
   gp.limit = (sizeof(struct gdt_entry) * 3) - 1;
-  gp.base = &gdt;
+  gp.base = (uint32_t)&gdt;
 
   /* Set up the NULL descriptor */
   gdt_set_gate(0, 0, 0, 0, 0);

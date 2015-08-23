@@ -4,6 +4,7 @@
 #include <stdio.h>
 
 #include <kernel/tty.h>
+#include <kernel/pc.h>
 
 void kernel_early(void) {
   terminal_initialize();
@@ -11,6 +12,7 @@ void kernel_early(void) {
 
 void kernel_main(void) {
   gdt_install();
+  idt_install();
   
   printf("Hello world\nThis is the kernel.\nCan you hear me now?");
 

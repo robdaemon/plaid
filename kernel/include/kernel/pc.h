@@ -7,6 +7,10 @@
 extern void gdt_flush();
 void gdt_install();
 
+extern void idt_load();
+void idt_set_gate(uint8_t num, uint32_t base, uint16_t sel, uint8_t flags);
+void idt_install();
+
 static inline void outportb(uint16_t port, uint8_t val) {
   asm volatile ( "outb %0, %1" : : "a"(val), "Nd"(port) );
 }

@@ -55,4 +55,10 @@ gdt_flush:
 flush2:
 	ret							# back to the C code.
 
+.global idt_load
+.extern idtp
+idt_load:
+	lidt idtp
+	ret
+	
 .size _start, . - _start
