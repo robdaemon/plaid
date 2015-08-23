@@ -13,6 +13,8 @@ int printf(const char* restrict format, ...) {
   va_list parameters;
   va_start(parameters, format);
 
+  unsigned char *where, buf[16];
+  
   int written = 0;
   size_t amount;
   bool rejected_bad_specifier = false;
@@ -45,12 +47,34 @@ int printf(const char* restrict format, ...) {
 
 	if(*format == 'c') {
 	  format++;
-	  char c= (char)va_arg(parameters, int /* char promotes to int */);
+	  char c = (char)va_arg(parameters, int /* char promotes to int */);
 	  print(&c, sizeof(c));
 	} else if(*format == 's') {
 	  format++;
 	  const char* s = va_arg(parameters, const char*);
 	  print(s, strlen(s));
+	} else if(*format == 'd') {
+	  format++;
+	  int i = va_arg(parameters, int);
+
+	  where = buf + 16 - 1;
+	  *where = '\0';
+	  int radix = 10;
+
+	  do {
+		unsigned long temp;
+
+		temp = (unsigned long)i % radix;
+		where--;
+		if(temp < 10) {
+		  *where = temp + '0';
+		} else {
+		  *where = temp - 10 + 'a';
+		}
+		i = (unsigned long)i / radix;
+	  } while(i != 0);
+
+	  print(where, strlen(where));
 	} else {
 	  goto incomprehensible_conversion;
 	}
