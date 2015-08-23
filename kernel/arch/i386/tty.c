@@ -31,20 +31,28 @@ void terminal_putentryat(char c, uint8_t color, size_t x, size_t y) {
 }
 
 void terminal_putchar(char c) {
-  if (c && c == '\n') {
+  if(c == '\b') {
+	if(terminal_column != 0) {
+	  terminal_column--;
+	}
+  } else if(c == '\t') {
+	terminal_column = (terminal_column + 8) & ~(8 - 1);
+  } else if(c == '\r') {
+	terminal_column = 0;
+  } else if(c == '\n') {
 	terminal_row++;
 	terminal_column = 0;
-	terminal_scroll();
   } else {
 	terminal_putentryat(c, terminal_color, terminal_column, terminal_row);
-	if(++terminal_column == VGA_WIDTH) {
-	  terminal_column = 0;
-	  terminal_row++;
-
-	  terminal_scroll();
-	}
+	terminal_column++;
   }
 
+  if(terminal_column >= VGA_WIDTH) {
+	terminal_column = 0;
+	terminal_row++;
+  }
+
+  terminal_scroll();
   terminal_move_cursor();
 }
 
