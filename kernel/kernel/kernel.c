@@ -13,10 +13,15 @@ void kernel_early(void) {
 void kernel_main(void) {
   gdt_install();
   idt_install();
+  isrs_install();
   
   printf("Hello world\nThis is the kernel.\nCan you hear me now?");
 
   for (int i = 0; i < 5; i++) {
 	printf("Yet another line: %d.\n", i);
   }
+
+  printf("Causing a GPF fault here (firing the interrupt):");
+
+  asm volatile ("int $0x21");
 }
