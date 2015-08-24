@@ -123,5 +123,57 @@ isr_common_stub:
 	addl $8, %esp				# Cleans up the pushed error code and ISR number
 	sti
 	iret						# pops 5 things at once: CS, EIP, EFLAGS, SS and ESP
+
+## IRQs
+
+	.macro irq_handler irq, id
+	.global irq\irq
+	irq\irq:
+	cli
+	push $0
+	push $\id
+	jmp irq_common_stub
+	.endm
+
+	irq_handler 0, 32
+	irq_handler 1, 33
+	irq_handler 2, 34
+	irq_handler 3, 35
+	irq_handler 4, 36
+	irq_handler 5, 37
+	irq_handler 6, 38
+	irq_handler 7, 39
+	irq_handler 8, 40
+	irq_handler 9, 41
+	irq_handler 10, 42
+	irq_handler 11, 43
+	irq_handler 12, 44
+	irq_handler 13, 45
+	irq_handler 14, 46
+	irq_handler 15, 47
+	
+irq_common_stub:
+	pusha						# push edi, esi, ebp, esp, ebx, edx, ecx, eax
+	movw %ds, %ax				# lower 16 bits of eax = ds
+	push %eax					# save the data segment descriptor
+
+	movw $0x0010, %ax			# load the kernel data segment descriptor
+	movw %ax, %ds
+	movw %ax, %es
+	movw %ax, %fs
+	movw %ax, %gs
+
+	call irq_handler
+
+	popl %eax 					# reload the segment descriptor
+	movw %ds, %ax
+	movw %es, %ax
+	movw %fs, %ax
+	movw %gs, %ax
+
+	popa						# pops edi, esi, ebp, ...
+	addl $8, %esp				# Cleans up the pushed error code and ISR number
+	sti
+	iret						# pops 5 things at once: CS, EIP, EFLAGS, SS and ESP
 	
 .size _start, . - _start
