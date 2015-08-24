@@ -5,6 +5,7 @@
 
 #include <kernel/tty.h>
 #include <kernel/pc.h>
+#include <kernel/kbd.h>
 
 void kernel_early(void) {
   terminal_initialize();
@@ -16,6 +17,7 @@ void kernel_main(void) {
   isrs_install();
   irq_install();
   timer_install();
+  keyboard_install();
   __asm__ __volatile__ ("sti");
   
   printf("Hello world\nThis is the kernel.\nCan you hear me now?");
