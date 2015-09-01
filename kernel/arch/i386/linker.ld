@@ -39,6 +39,7 @@ SECTIONS
 		*(.bootstrap_stack)
 	}
 
+	end = .; _end = .; __end = .;
 	/* The compiler may produce other sections. Put them here if you want them
            in the kernel. */
 }
