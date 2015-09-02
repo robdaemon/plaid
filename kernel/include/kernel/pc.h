@@ -39,4 +39,8 @@ static inline uint8_t inportb(uint16_t port) {
   return ret;
 }
 
+#define ASSERT(b) ((b) ? (void)0 : panic_assert(__FILE__, __LINE__, #b))
+
+void panic_assert(const char* file, uint32_t line, const char* desc);
+
 #endif

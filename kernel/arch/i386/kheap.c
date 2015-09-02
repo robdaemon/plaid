@@ -1,6 +1,7 @@
 #include <kernel/kheap.h>
 #include <kernel/kmalloc.h>
 #include <kernel/paging.h>
+#include <kernel/pc.h>
 
 extern uint32_t end;
 uint32_t placement_address = (uint32_t)&end;
@@ -43,8 +44,8 @@ static int8_t header_t_less_than(void* a, void* b) {
 heap_t* create_heap(uint32_t start_addr, uint32_t end_addr, uint32_t max, uint8_t supervisor, uint8_t readonly) {
   heap_t* heap = (heap_t*)kmalloc(sizeof(heap_t));
 
-  // ASSERT(start_addr % 0x1000 == 0);
-  // ASSERT(end_addr % 0x1000 == 0);
+  ASSERT(start_addr % 0x1000 == 0);
+  ASSERT(end_addr % 0x1000 == 0);
 
   heap->index = place_ordered_array((void*)start_addr, HEAP_INDEX_SIZE, &header_t_less_than);
 
@@ -71,13 +72,13 @@ heap_t* create_heap(uint32_t start_addr, uint32_t end_addr, uint32_t max, uint8_
 }
 
 static void expand(uint32_t new_size, heap_t* heap) {
-  // ASSERT(new_size > heap->end_address - heap->end_address);
+  ASSERT(new_size > heap->end_address - heap->end_address);
 
   if((new_size & 0xFFFFF000) != 0) {
 	new_size &= 0xFFFFF000;
 	new_size += 0x1000;
   }
-  // ASSERT(heap->start_address + new_size <= heap->max_address);
+  ASSERT(heap->start_address + new_size <= heap->max_address);
 
   uint32_t old_size = heap->end_address - heap->start_address;
   uint32_t i = old_size;
@@ -91,7 +92,7 @@ static void expand(uint32_t new_size, heap_t* heap) {
 }
 
 static uint32_t contract(uint32_t new_size, heap_t* heap) {
-  // ASSERT(new_size < heap->end_address - heap->start_address);
+  ASSERT(new_size < heap->end_address - heap->start_address);
 
   if(new_size & 0x1000) {
 	new_size &= 0x1000;
@@ -228,8 +229,8 @@ void kfree(void* p, heap_t* heap) {
   header_t* header = (header_t*)((uint32_t)p - sizeof(header_t));
   footer_t* footer = (footer_t*)((uint32_t)header + header->size - sizeof(footer_t));
 
-  // ASSERT(header->magic == HEAP_MAGIC);
-  // ASSERT(footer->magic == HEAP_MAGIC);
+  ASSERT(header->magic == HEAP_MAGIC);
+  ASSERT(footer->magic == HEAP_MAGIC);
 
   // Make a hole.
   header->is_hole = 1;
@@ -261,7 +262,7 @@ void kfree(void* p, heap_t* heap) {
 	  iter++;
 	}
 
-	// ASSERT(iter < heap->index.size);
+	ASSERT(iter < heap->index.size);
 	remove_ordered_array(iter, &heap->index);
   }
 
