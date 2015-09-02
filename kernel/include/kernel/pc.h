@@ -29,15 +29,8 @@ void irq_handler(registers_t r);
 
 void timer_install();
 
-static inline void outportb(uint16_t port, uint8_t val) {
-  asm volatile ( "outb %0, %1" : : "a"(val), "Nd"(port) );
-}
-
-static inline uint8_t inportb(uint16_t port) {
-  uint8_t ret;
-  asm volatile ( "inb %1, %0" : "=a"(ret) : "Nd"(port) );
-  return ret;
-}
+extern inline void outportb(uint16_t port, uint8_t val);
+extern inline uint8_t inportb(uint16_t port);
 
 #define ASSERT(b) ((b) ? (void)0 : panic_assert(__FILE__, __LINE__, #b))
 

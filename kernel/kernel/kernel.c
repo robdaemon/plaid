@@ -19,7 +19,7 @@ void kernel_main(void) {
   irq_install();
   timer_install();
   keyboard_install();
-  __asm__ __volatile__ ("sti");
+  asm volatile ("sti");
 
   uint32_t a = kmalloc(8);
   
@@ -33,15 +33,15 @@ void kernel_main(void) {
 	printf("Yet another line: %d.\n", i);
   }
 
-  printf("a = %d\n", a);
-  printf("b = %d\n", b);
-  printf("c = %d\n", c);
+  printf("a = %x\n", a);
+  printf("b = %x\n", b);
+  printf("c = %x\n", c);
 
   kfree(c);
   kfree(b);
 
   uint32_t d = kmalloc(12);
-  printf("d = %d\n", d);
+  printf("d = %x\n", d);
   
   //  printf("Causing a GPF fault here (firing the interrupt):");
 

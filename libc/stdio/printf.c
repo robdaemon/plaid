@@ -75,9 +75,42 @@ int printf(const char* restrict format, ...) {
 	  } while(i != 0);
 
 	  print(where, strlen(where));
+	} else if(*format == 'x') {
+	  format++;
+	  int n = va_arg(parameters, unsigned int);
+
+	  char noZeroes = 1;
+	  
+	  print("0x", 2);
+	  int temp;
+
+	  int i;
+	  for(i = 28; i > 0; i -= 4) {
+		temp = (n >> i) & 0xF;
+		if(temp == 0 && noZeroes != 0) {
+		  continue;
+		}
+
+		if(temp >= 0xA) {
+		  noZeroes = 0;
+		  putchar(temp - 0xA+'a');
+		} else {
+		  noZeroes = 0;
+		  putchar(temp + '0');
+		}
+	  }
+
+	  temp = n & 0xF;
+	  if(temp >= 0xA) {
+		noZeroes = 0;
+		putchar(temp - 0xA+'a');
+	  } else {
+		noZeroes = 0;
+		putchar(temp + '0');
+	  }
 	} else {
 	  goto incomprehensible_conversion;
-	}
+	} 
   }
 
   va_end(parameters);

@@ -220,7 +220,7 @@ void* alloc(uint32_t size, uint8_t page_align, heap_t* heap) {
   return (void*)((uint32_t)block_header + sizeof(header_t));
 }
 
-void kfree(void* p, heap_t* heap) {
+void free(void* p, heap_t* heap) {
   // Null pointers are safe.
   if(p == 0) {
 	return;
