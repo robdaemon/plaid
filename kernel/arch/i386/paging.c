@@ -2,9 +2,10 @@
 #include <string.h>
 
 #include <kernel/kmalloc.h>
-#include <kernel/paging.h>
-#include <kernel/kheap.h>
-#include <kernel/pc.h>
+
+#include <kernel/arch/i386/paging.h>
+#include <kernel/arch/i386/kheap.h>
+#include <kernel/arch/i386/pc.h>
 
 page_directory_t* kernel_directory = 0;
 page_directory_t* current_directory = 0;

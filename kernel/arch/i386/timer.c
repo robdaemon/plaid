@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <stdint.h>
 
-#include <kernel/pc.h>
+#include <kernel/arch/i386/pc.h>
 
 int32_t timer_ticks = 0;
 

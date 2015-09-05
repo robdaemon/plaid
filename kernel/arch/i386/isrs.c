@@ -2,7 +2,7 @@
 #include <stdint.h>
 #include <stdio.h>
 
-#include <kernel/pc.h>
+#include <kernel/arch/i386/pc.h>
 
 extern void isr0();
 extern void isr1();

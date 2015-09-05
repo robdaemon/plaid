@@ -1,4 +1,4 @@
-#include <kernel/pc.h>
+#include <kernel/arch/i386/pc.h>
 
 inline void outportb(uint16_t port, uint8_t val) {
   asm volatile ( "outb %0, %1" : : "a"(val), "Nd"(port) );

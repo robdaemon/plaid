@@ -2,7 +2,7 @@
 #include <stdint.h>
 
 #include <kernel/kbd.h>
-#include <kernel/pc.h>
+#include <kernel/arch/i386/pc.h>
 
 /* kbdus is the US Keyboard layout. */
 unsigned char kbdus[128] = {

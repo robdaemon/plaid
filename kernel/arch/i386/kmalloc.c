@@ -1,8 +1,8 @@
 #include <stdint.h>
 
-#include <kernel/pc.h>
-#include <kernel/paging.h>
-#include <kernel/kheap.h>
+#include <kernel/arch/i386/pc.h>
+#include <kernel/arch/i386/paging.h>
+#include <kernel/arch/i386/kheap.h>
 
 extern uint32_t placement_address;
 extern heap_t* kheap;

@@ -1,7 +1,7 @@
 #include <stddef.h>
 #include <stdint.h>
 #include <string.h>
-#include <kernel/pc.h>
+#include <kernel/arch/i386/pc.h>
 
 struct idt_entry {
   uint16_t base_low;

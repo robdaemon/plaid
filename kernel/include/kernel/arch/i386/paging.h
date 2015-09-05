@@ -2,7 +2,7 @@
 #define __KERNEL_PAGING_H 1
 
 #include <stdint.h>
-#include <kernel/pc.h>
+#include <kernel/arch/i386/pc.h>
 
 typedef struct page {
   uint32_t present : 1;

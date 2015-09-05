@@ -1,7 +1,8 @@
-#include <kernel/kheap.h>
 #include <kernel/kmalloc.h>
-#include <kernel/paging.h>
-#include <kernel/pc.h>
+
+#include <kernel/arch/i386/kheap.h>
+#include <kernel/arch/i386/paging.h>
+#include <kernel/arch/i386/pc.h>
 
 extern uint32_t end;
 uint32_t placement_address = (uint32_t)&end;

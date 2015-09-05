@@ -3,9 +3,10 @@
 #include <stdint.h>
 #include <string.h>
 
-#include <kernel/vga.h>
 #include <kernel/tty.h>
-#include <kernel/pc.h>
+
+#include <kernel/arch/i386/vga.h>
+#include <kernel/arch/i386/pc.h>
 
 size_t terminal_row;
 size_t terminal_column;

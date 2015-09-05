@@ -1,6 +1,6 @@
 #include <kernel/ordered_array.h>
 #include <kernel/kmalloc.h>
-#include <kernel/pc.h>
+#include <kernel/arch/i386/pc.h>
 
 #include <string.h>
 

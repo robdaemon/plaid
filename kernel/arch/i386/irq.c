@@ -1,6 +1,6 @@
 #include <stdint.h>
 
-#include <kernel/pc.h>
+#include <kernel/arch/i386/pc.h>
 
 extern void irq0();
 extern void irq1();

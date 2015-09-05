@@ -4,9 +4,11 @@
 #include <stdio.h>
 
 #include <kernel/tty.h>
-#include <kernel/pc.h>
 #include <kernel/kbd.h>
-#include <kernel/paging.h>
+#include <kernel/kmalloc.h>
+
+#include <kernel/arch/i386/pc.h>
+#include <kernel/arch/i386/paging.h>
 
 void kernel_early(void) {
   terminal_initialize();
