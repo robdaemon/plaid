@@ -39,8 +39,8 @@ void kernel_main(void) {
   printf("b = %x\n", b);
   printf("c = %x\n", c);
 
-  kfree(c);
-  kfree(b);
+  kfree((void*)c);
+  kfree((void*)b);
 
   uint32_t d = kmalloc(12);
   printf("d = %x\n", d);

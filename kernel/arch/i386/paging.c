@@ -35,12 +35,12 @@ static void clear_frame(uint32_t frame_addr) {
   frames[index] &= ~(0x1 << offset);
 }
 
-static uint32_t test_frame(uint32_t frame_addr) {
-  uint32_t frame = frame_addr / 0x1000;
-  uint32_t index = INDEX_FROM_BIT(frame);
-  uint32_t offset = OFFSET_FROM_BIT(frame);
-  return (frames[index] & (0x1 << offset));
-}
+/* static uint32_t test_frame(uint32_t frame_addr) { */
+/*   uint32_t frame = frame_addr / 0x1000; */
+/*   uint32_t index = INDEX_FROM_BIT(frame); */
+/*   uint32_t offset = OFFSET_FROM_BIT(frame); */
+/*   return (frames[index] & (0x1 << offset)); */
+/* } */
 
 static uint32_t first_frame() {
   uint32_t i, j;
@@ -173,6 +173,9 @@ void page_fault(registers_t r) {
   }
   if(reserved) {
 	printf("reserved ");
+  }
+  if(id) {
+	printf("ID: %d ", id);
   }
   printf("] at 0x%d\n", faulting_address);
   for(;;);

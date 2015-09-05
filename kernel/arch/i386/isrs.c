@@ -119,6 +119,6 @@ void fault_handler(registers_t r) {
 	puts("Exception. System halted!\n");
 	for(;;);
   } else {
-	printf("other ISR, ignoring: %d", r.int_no);
+	printf("other ISR, ignoring: %d", (int)r.int_no);
   }
 }

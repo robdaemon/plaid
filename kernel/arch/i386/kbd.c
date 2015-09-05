@@ -34,7 +34,7 @@ unsigned char kbdus[128] = {
   0,
 };
 
-void keyboard_handler(registers_t r) {
+void keyboard_handler(__attribute__((unused)) registers_t r) {
   unsigned char scancode;
 
   /* Read from the keyboard buffer directly */
