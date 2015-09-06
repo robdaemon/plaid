@@ -6,6 +6,8 @@ CPPFLAGS?=
 LDFLAGS?=
 LIBS?=
 
+CP?=cp
+
 DESTDIR?=
 PREFIX?=/usr/local
 EXEC_PREFIX?=$(PREFIX)
@@ -68,8 +70,8 @@ install: install-headers install-kernel
 
 install-headers:
 	mkdir -p $(DESTDIR)$(INCLUDEDIR)
-	cp -RTv include $(DESTDIR)$(INCLUDEDIR)
+	$(CP) -RTv include $(DESTDIR)$(INCLUDEDIR)
 
 install-kernel: plaid.kernel
 	mkdir -p $(DESTDIR)$(BOOTDIR)
-	cp plaid.kernel $(DESTDIR)$(BOOTDIR)
+	$(CP) plaid.kernel $(DESTDIR)$(BOOTDIR)
