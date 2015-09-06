@@ -1,4 +1,4 @@
-HOST?=$(shell ../default-host.sh)
+HOST?=i686-elf
 HOSTARCH:=$(shell ../target-triplet-to-arch.sh $(HOST))
 
 CFLAGS?=-O2 -g
