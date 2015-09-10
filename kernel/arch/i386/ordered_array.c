@@ -36,21 +36,21 @@ void insert_ordered_array(type_t item, ordered_array_t* array) {
   ASSERT(array->less_than);
   uint32_t iter = 0;
   while(iter < array->size && array->less_than(array->array[iter], item)) {
-	iter++;
+        iter++;
   }
 
   if(iter == array->size) {
-	array->array[array->size++] = item;
+        array->array[array->size++] = item;
   } else {
-	type_t temp = array->array[iter];
-	array->array[iter] = item;
-	while(iter < array->size) {
-	  iter++;
-	  type_t temp2 = array->array[iter];
-	  array->array[iter] = temp;
-	  temp = temp2;
-	}
-	array->size++;
+        type_t temp = array->array[iter];
+        array->array[iter] = item;
+        while(iter < array->size) {
+          iter++;
+          type_t temp2 = array->array[iter];
+          array->array[iter] = temp;
+          temp = temp2;
+        }
+        array->size++;
   }
 }
 
@@ -61,8 +61,8 @@ type_t lookup_ordered_array(uint32_t i, ordered_array_t* array) {
 
 void remove_ordered_array(uint32_t i, ordered_array_t* array) {
   while(i < array->size) {
-	array->array[i] = array->array[i+1];
-	i++;
+        array->array[i] = array->array[i+1];
+        i++;
   }
   array->size--;
 }

@@ -9,7 +9,7 @@ void timer_handler(__attribute__((unused)) registers_t r) {
   timer_ticks++;
 
   if (timer_ticks % 18 == 0) {
-	printf("One second! Ticks: %d\n", (int)timer_ticks);
+        printf("One second! Ticks: %d\n", (int)timer_ticks);
   }
 }
 

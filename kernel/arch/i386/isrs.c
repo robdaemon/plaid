@@ -115,10 +115,10 @@ const char *exception_messages[] = {
 
 void fault_handler(registers_t r) {
   if (r.int_no < 32) {
-	puts(exception_messages[r.int_no]);
-	puts("Exception. System halted!\n");
-	for(;;);
+        puts(exception_messages[r.int_no]);
+        puts("Exception. System halted!\n");
+        for(;;);
   } else {
-	printf("other ISR, ignoring: %d", (int)r.int_no);
+        printf("other ISR, ignoring: %d", (int)r.int_no);
   }
 }

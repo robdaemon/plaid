@@ -42,12 +42,12 @@ void keyboard_handler(__attribute__((unused)) registers_t r) {
 
   /* if the top bit is set, this means a key was released */
   if(scancode & 0x80) {
-	
+        
   } else {
-	/* Key was pressed */
+        /* Key was pressed */
 
-	/* This is just going to echo the key to the screen */
-	putchar(kbdus[scancode]);
+        /* This is just going to echo the key to the screen */
+        putchar(kbdus[scancode]);
   }
 }
 

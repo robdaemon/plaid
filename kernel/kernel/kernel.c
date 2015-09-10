@@ -32,7 +32,7 @@ void kernel_main(void) {
   printf("Hello world\nThis is the kernel.\nCan you hear me now?");
 
   for (int i = 0; i < 5; i++) {
-	printf("Yet another line: %d.\n", i);
+        printf("Yet another line: %d.\n", i);
   }
 
   printf("a = %x\n", a);

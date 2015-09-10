@@ -1,6 +1,6 @@
 current_dir=$(shell pwd)
 
-export CP?=gcp
+export CP?=cp
 export MAKE?=make
 export HOST?=i686-elf
 export HOSTARCH:=$(shell $(current_dir)/target-triplet-to-arch.sh $(HOST))

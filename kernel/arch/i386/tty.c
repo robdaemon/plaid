@@ -33,24 +33,24 @@ void terminal_putentryat(char c, uint8_t color, size_t x, size_t y) {
 
 void terminal_putchar(char c) {
   if(c == '\b') {
-	if(terminal_column != 0) {
-	  terminal_column--;
-	}
+        if(terminal_column != 0) {
+          terminal_column--;
+        }
   } else if(c == '\t') {
-	terminal_column = (terminal_column + 8) & ~(8 - 1);
+        terminal_column = (terminal_column + 8) & ~(8 - 1);
   } else if(c == '\r') {
-	terminal_column = 0;
+        terminal_column = 0;
   } else if(c == '\n') {
-	terminal_row++;
-	terminal_column = 0;
+        terminal_row++;
+        terminal_column = 0;
   } else {
-	terminal_putentryat(c, terminal_color, terminal_column, terminal_row);
-	terminal_column++;
+        terminal_putentryat(c, terminal_color, terminal_column, terminal_row);
+        terminal_column++;
   }
 
   if(terminal_column >= VGA_WIDTH) {
-	terminal_column = 0;
-	terminal_row++;
+        terminal_column = 0;
+        terminal_row++;
   }
 
   terminal_scroll();
@@ -73,14 +73,14 @@ void terminal_scroll(void) {
   blank = 0x20 | (terminal_color << 8);
 
   if(terminal_row >= VGA_HEIGHT) {
-	/* Move the current text chunk in the buffer by one line */
-	temp = terminal_row - VGA_HEIGHT + 1;
-	memcpy(terminal_buffer,
-		   terminal_buffer + temp * VGA_WIDTH, (VGA_HEIGHT - temp) * VGA_WIDTH * 2);
+        /* Move the current text chunk in the buffer by one line */
+        temp = terminal_row - VGA_HEIGHT + 1;
+        memcpy(terminal_buffer,
+                   terminal_buffer + temp * VGA_WIDTH, (VGA_HEIGHT - temp) * VGA_WIDTH * 2);
 
-	/* Set the last row to our blank character */
-	memsetw(terminal_buffer + (VGA_HEIGHT - temp) * VGA_WIDTH, blank, VGA_WIDTH);
-	terminal_row = VGA_HEIGHT - 1;
+        /* Set the last row to our blank character */
+        memsetw(terminal_buffer + (VGA_HEIGHT - temp) * VGA_WIDTH, blank, VGA_WIDTH);
+        terminal_row = VGA_HEIGHT - 1;
   }
 }
 
@@ -99,7 +99,7 @@ void terminal_clear(void) {
   unsigned blank = 0x20 | (terminal_color << 8);
 
   for(size_t i = 0; i < VGA_HEIGHT; i++) {
-	memsetw(terminal_buffer + i * VGA_WIDTH, blank, VGA_WIDTH);
+        memsetw(terminal_buffer + i * VGA_WIDTH, blank, VGA_WIDTH);
   }
 
   terminal_row = 0;
