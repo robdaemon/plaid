@@ -44,6 +44,11 @@ typedef struct fs_node {
   struct fs_node *ptr; // Symbolic links and mountpoints use this
 } fs_node_t;
 
+struct dirent {
+  char name[128]; // filename. This will need to be larger.
+  uint32_t inode;
+};
+
 // This defines a POSIX-like filesystem root. Will be changed to a
 // different model where there are multiple filesystem roots, one
 // per device. More like the Amiga filesystem.

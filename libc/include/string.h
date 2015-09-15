@@ -15,6 +15,8 @@ extern "C" {
   void* memset(void*, int, size_t);
   void* memsetw(void*, int, size_t);
   size_t strlen(const char*);
+  char* strcpy(char*, const char*);
+  int strcmp(char*, char*);
 
 #ifdef __cplusplus
 }

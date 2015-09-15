@@ -31,6 +31,7 @@ LIBS:=$(LIBS) $(KERNEL_ARCH_LIBS)
 OBJS:=\
 $(KERNEL_ARCH_OBJS) \
 kernel/fs.o \
+kernel/initrd.o \
 kernel/kernel.o \
 
 CRTI_OBJ:=$(ARCHDIR)/crti.o

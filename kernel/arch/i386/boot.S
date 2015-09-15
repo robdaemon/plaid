@@ -18,18 +18,23 @@ stack_bottom:
 	.skip 16384 # 16 KiB
 stack_top:
 
+.comm mboot_ptr, 4
+.comm magic, 4	
+
 ## Kernel entry point
 .section .text
 .global _start
 .type _start, @function
 _start:
 	movl $stack_top, %esp
+	movl %eax, magic
+	movl %ebx, mboot_ptr
 	
 	call kernel_early 			# Initialize the core kernel before running the
 								# global constructors.
 
 	call _init 					# Call the global constructors
-		
+	
 	call kernel_main 			# Transfer control to the main kernel
 
 	cli 						# Hang if kernel_main unexpectedly returns
