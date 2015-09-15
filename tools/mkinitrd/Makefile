@@ -1,6 +1,3 @@
-HOST?=$(shell ../../default-host.sh)
-HOSTARCH:=$(shell ../../target-triplet-to-arch.sh $(HOST))
-
 CFLAGS?=-O2 -g
 CPPFLAGS?=
 LDFLAGS?=
@@ -14,7 +11,7 @@ LIBDIR?=$(EXEC_PREFIX)/lib
 BINDIR?=$(EXEC_PREFIX)/bin
 
 CFLAGS:=$(CFLAGS) -Wall -Wextra
-CPPFLAGS:=$(CPPFLAGS) -I../../kernel/include 
+CPPFLAGS:=$(CPPFLAGS)
 LDFLAGS:=$(LDFLAGS)
 LIBS:=$(LIBS)
 

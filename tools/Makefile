@@ -2,7 +2,7 @@
 
 all: mkinitrd
 
-mkinitrd:
+mkinitrd: mkinitrd/mkinitrd
 	$(MAKE) -C mkinitrd
 
 install:
