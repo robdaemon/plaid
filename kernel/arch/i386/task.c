@@ -1,6 +1,7 @@
 #include <kernel/arch/i386/task.h>
 #include <kernel/kmalloc.h>
 #include <string.h>
+#include <stdio.h>
 
 // Currently running task
 volatile task_t* current_task;
@@ -57,12 +58,16 @@ void move_stack(void* new_stack_start, uint32_t size) {
   uint32_t old_ebp;
   asm volatile("mov %%ebp, %0" : "=r"(old_ebp));
 
+  // printf("initial esp = %x initial ebp = %x\n", old_esp, old_ebp);
+
   // Offset to get a new stack
   uint32_t offset = (uint32_t)new_stack_start - initial_esp;
 
   // New ESP and EBP
   uint32_t new_esp = old_esp + offset;
   uint32_t new_ebp = old_ebp + offset;
+
+  // printf("new esp = %x new ebp = %x\n", new_esp, new_ebp);
 
   // Copy stack
   memcpy((void*)new_esp, (void*)old_esp, initial_esp - old_esp);
@@ -113,6 +118,8 @@ void switch_task() {
   current_task->esp = esp;
   current_task->ebp = ebp;
 
+  printf("old_esp = %x old_ebp = %x old_eip = %x\n", esp, ebp, eip);
+
   // Get the next task.
   current_task = current_task->next;
   // if we walk off the end of the list, go back to the beginning.
@@ -125,6 +132,8 @@ void switch_task() {
   eip = current_task->eip;
   esp = current_task->esp;
   ebp = current_task->ebp;
+
+  printf("new_esp = %x new_ebp = %x new_eip = %x\n", esp, ebp, eip);
 
   // Change the page directory appropriately
   current_directory = current_task->page_directory;

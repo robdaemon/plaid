@@ -34,9 +34,8 @@ int kernel_main(uint32_t esp) {
   asm volatile("sti");
 
   timer_install();
-  keyboard_install();
 
-  uint32_t a = kmalloc(8);
+  keyboard_install();
 
   ASSERT(mboot_ptr != 0);
   ASSERT(mboot_ptr->mods_count > 0);
@@ -51,42 +50,26 @@ int kernel_main(uint32_t esp) {
 
   fs_root = initialize_initrd(initrd_location);
 
-// Create a new process in a new address space which is a clone of this.
-   int ret = fork();
+  // Create a new process in a new address space which is a clone of this.
+  int ret = fork();
 
-   printf("fork() returned %x", ret);
-   printf(" getpid() returned %x", getpid());
+  printf("fork() returned %x, ", ret);
+  printf(" getpid() returned %x\n", getpid());
 
   printf("Loading initial ramdisk...\n");
 
-  uint32_t b = kmalloc(8);
-  uint32_t c = kmalloc(8);
-
-  printf("Hello world\nThis is the kernel.\nCan you hear me now?");
-
-  for (int i = 0; i < 5; i++) {
-    printf("Yet another line: %d.\n", i);
-  }
-
-  printf("a = %x\n", a);
-  printf("b = %x\n", b);
-  printf("c = %x\n", c);
-
-  kfree((void*)c);
-  kfree((void*)b);
-
-  uint32_t d = kmalloc(12);
-  printf("d = %x\n", d);
-
+  asm volatile("cli");
   traverse_initrd();
+  asm volatile("sti");
 
   printf("That's all folks\n");
+
+  for(;;);
 
   return 0;
 }
 
 void traverse_initrd() {
-  asm volatile("cli");
   int i = 0;
   struct dirent* node = 0;
   while ((node = readdir_fs(fs_root, i)) != 0) {
@@ -102,6 +85,4 @@ void traverse_initrd() {
     i++;
   }
   printf("\n");
-
-  asm volatile("sti");
 }
