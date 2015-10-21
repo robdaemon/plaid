@@ -9,8 +9,8 @@ int putchar(int ic) {
   char c = (char)ic;
   terminal_write(&c, sizeof(c));
 #else
-  // TODO: Implement this syscall
+// TODO: Implement this syscall
 #endif
-  
+
   return ic;
 }

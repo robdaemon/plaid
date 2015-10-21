@@ -12,15 +12,16 @@ uint32_t root_node_count;
 
 struct dirent dirent;
 
-static uint32_t initrd_read(fs_node_t* node, uint32_t offset, uint32_t size, uint8_t* buffer) {
+static uint32_t initrd_read(fs_node_t* node, uint32_t offset, uint32_t size,
+                            uint8_t* buffer) {
   initrd_file_header_t header = file_headers[node->inode];
-  
-  if(offset > header.length) {
-	return 0;
+
+  if (offset > header.length) {
+    return 0;
   }
 
-  if(offset+size > header.length) {
-	size = header.length - offset;
+  if (offset + size > header.length) {
+    size = header.length - offset;
   }
 
   memcpy(buffer, (uint8_t*)(header.offset + offset), size);
@@ -29,16 +30,16 @@ static uint32_t initrd_read(fs_node_t* node, uint32_t offset, uint32_t size, uin
 }
 
 static struct dirent* initrd_readdir(fs_node_t* node, uint32_t index) {
-  if(node == initrd_root && index == 0) {
-	strcpy(dirent.name, "devices");
-	dirent.name[strlen("devices")] = 0;
-	dirent.inode = 0;
-	
-	return &dirent;
+  if (node == initrd_root && index == 0) {
+    strcpy(dirent.name, "devices");
+    dirent.name[strlen("devices")] = 0;
+    dirent.inode = 0;
+
+    return &dirent;
   }
 
-  if((index - 1) >= root_node_count) {
-	return 0;
+  if ((index - 1) >= root_node_count) {
+    return 0;
   }
 
   strcpy(dirent.name, root_nodes[index - 1].name);
@@ -49,14 +50,14 @@ static struct dirent* initrd_readdir(fs_node_t* node, uint32_t index) {
 }
 
 static fs_node_t* initrd_finddir(fs_node_t* node, char* name) {
-  if(node == initrd_root && !strcmp(name, "devices")) {
-	return initrd_devices;
+  if (node == initrd_root && !strcmp(name, "devices")) {
+    return initrd_devices;
   }
 
-  for(uint32_t i = 0; i < root_node_count; i++) {
-	if(!strcmp(name, root_nodes[i].name)) {
-	  return &root_nodes[i];
-	}
+  for (uint32_t i = 0; i < root_node_count; i++) {
+    if (!strcmp(name, root_nodes[i].name)) {
+      return &root_nodes[i];
+    }
   }
 
   return 0;
@@ -83,25 +84,26 @@ fs_node_t* initialize_initrd(uint32_t location) {
   initrd_devices->readdir = &initrd_readdir;
   initrd_devices->finddir = &initrd_finddir;
 
-  root_nodes = (fs_node_t*)kmalloc(sizeof(fs_node_t) * initrd_header->file_count);
+  root_nodes =
+      (fs_node_t*)kmalloc(sizeof(fs_node_t) * initrd_header->file_count);
   root_node_count = initrd_header->file_count;
 
-  for(uint32_t i = 0; i < initrd_header->file_count; i++) {
-	file_headers[i].offset += location;
-	strcpy(root_nodes[i].name, (const char*)&file_headers[i].name);
-	root_nodes[i].mask = 0;
-	root_nodes[i].uid = 0;
-	root_nodes[i].gid = 0;
-	root_nodes[i].length = file_headers[i].length;
-	root_nodes[i].inode = i;
-	root_nodes[i].flags = FS_FILE;
-	root_nodes[i].read = &initrd_read;
-	root_nodes[i].write = 0;
-	root_nodes[i].readdir = 0;
-	root_nodes[i].finddir = 0;
-	root_nodes[i].open = 0;
-	root_nodes[i].close = 0;
-	root_nodes[i].impl = 0;
+  for (uint32_t i = 0; i < initrd_header->file_count; i++) {
+    file_headers[i].offset += location;
+    strcpy(root_nodes[i].name, (const char*)&file_headers[i].name);
+    root_nodes[i].mask = 0;
+    root_nodes[i].uid = 0;
+    root_nodes[i].gid = 0;
+    root_nodes[i].length = file_headers[i].length;
+    root_nodes[i].inode = i;
+    root_nodes[i].flags = FS_FILE;
+    root_nodes[i].read = &initrd_read;
+    root_nodes[i].write = 0;
+    root_nodes[i].readdir = 0;
+    root_nodes[i].finddir = 0;
+    root_nodes[i].open = 0;
+    root_nodes[i].close = 0;
+    root_nodes[i].impl = 0;
   }
 
   return initrd_root;

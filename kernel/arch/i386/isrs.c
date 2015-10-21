@@ -55,7 +55,7 @@ void isrs_install() {
   idt_set_gate(13, (unsigned)isr13, 0x08, 0x8E);
   idt_set_gate(14, (unsigned)isr14, 0x08, 0x8E);
   idt_set_gate(15, (unsigned)isr15, 0x08, 0x8E);
-  
+
   idt_set_gate(16, (unsigned)isr16, 0x08, 0x8E);
   idt_set_gate(17, (unsigned)isr17, 0x08, 0x8E);
   idt_set_gate(18, (unsigned)isr18, 0x08, 0x8E);
@@ -72,53 +72,52 @@ void isrs_install() {
   idt_set_gate(28, (unsigned)isr28, 0x08, 0x8E);
   idt_set_gate(29, (unsigned)isr29, 0x08, 0x8E);
   idt_set_gate(30, (unsigned)isr30, 0x08, 0x8E);
-  idt_set_gate(31, (unsigned)isr31, 0x08, 0x8E);  
+  idt_set_gate(31, (unsigned)isr31, 0x08, 0x8E);
 }
 
-const char *exception_messages[] = {
-  "Divide by zero",
-  "Debug",
-  "Non-maskable interrupt",
-  "Breakpoint",
-  "Into detected overflow",
-  "Out of bounds",
-  "Invalid opcode",
-  "No Coprocessor",
+const char *exception_messages[] = {"Divide by zero",
+                                    "Debug",
+                                    "Non-maskable interrupt",
+                                    "Breakpoint",
+                                    "Into detected overflow",
+                                    "Out of bounds",
+                                    "Invalid opcode",
+                                    "No Coprocessor",
 
-  "Double fault",
-  "Coprocessor segment overrun",
-  "Bad TSS",
-  "Segment not present",
-  "Stack fault",
-  "General protection fault",
-  "Page fault",
-  "Unknown interrupt",
+                                    "Double fault",
+                                    "Coprocessor segment overrun",
+                                    "Bad TSS",
+                                    "Segment not present",
+                                    "Stack fault",
+                                    "General protection fault",
+                                    "Page fault",
+                                    "Unknown interrupt",
 
-  "Coprocessor fault",
-  "Alignment check",
-  "Machine check",
-  "Reserved",
-  "Reserved",
-  "Reserved",
-  "Reserved",
-  "Reserved",
-  
-  "Reserved",
-  "Reserved",
-  "Reserved",
-  "Reserved",
-  "Reserved",
-  "Reserved",
-  "Reserved",
-  "Reserved"
-};
+                                    "Coprocessor fault",
+                                    "Alignment check",
+                                    "Machine check",
+                                    "Reserved",
+                                    "Reserved",
+                                    "Reserved",
+                                    "Reserved",
+                                    "Reserved",
+
+                                    "Reserved",
+                                    "Reserved",
+                                    "Reserved",
+                                    "Reserved",
+                                    "Reserved",
+                                    "Reserved",
+                                    "Reserved",
+                                    "Reserved"};
 
 void fault_handler(registers_t r) {
   if (r.int_no < 32) {
-        puts(exception_messages[r.int_no]);
-        puts("Exception. System halted!\n");
-        for(;;);
+    puts(exception_messages[r.int_no]);
+    puts("Exception. System halted!\n");
+    for (;;)
+      ;
   } else {
-        printf("other ISR, ignoring: %d", (int)r.int_no);
+    printf("other ISR, ignoring: %d", (int)r.int_no);
   }
 }
