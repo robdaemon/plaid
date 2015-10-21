@@ -34,6 +34,8 @@ _start:
 								# global constructors.
 
 	call _init 					# Call the global constructors
+
+	push $stack_top
 	
 	call kernel_main 			# Transfer control to the main kernel
 

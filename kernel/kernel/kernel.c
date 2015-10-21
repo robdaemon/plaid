@@ -12,24 +12,31 @@
 #include <kernel/arch/i386/multiboot.h>
 #include <kernel/arch/i386/pc.h>
 #include <kernel/arch/i386/paging.h>
+#include <kernel/arch/i386/task.h>
 
 extern struct multiboot* mboot_ptr;
 extern uint32_t placement_address;
+
+uint32_t initial_esp;
 
 void traverse_initrd();
 
 void kernel_early(void) { terminal_initialize(); }
 
-void kernel_main(void) {
+int kernel_main(uint32_t esp) {
+  initial_esp = esp;
+
   gdt_install();
   idt_install();
   isrs_install();
   irq_install();
-  timer_install();
-  keyboard_install();
+
   asm volatile("sti");
 
-  printf("Loading initial ramdisk...\n");
+  timer_install();
+  keyboard_install();
+
+  uint32_t a = kmalloc(8);
 
   ASSERT(mboot_ptr != 0);
   ASSERT(mboot_ptr->mods_count > 0);
@@ -38,9 +45,20 @@ void kernel_main(void) {
   // move the start of our kernel heap to past the initrd
   placement_address = initrd_end;
 
-  uint32_t a = kmalloc(8);
-
   initialize_paging();
+
+  initialize_tasking();
+
+  fs_root = initialize_initrd(initrd_location);
+
+// Create a new process in a new address space which is a clone of this.
+   int ret = fork();
+
+   printf("fork() returned %x", ret);
+   printf(" getpid() returned %x", getpid());
+
+  printf("Loading initial ramdisk...\n");
+
   uint32_t b = kmalloc(8);
   uint32_t c = kmalloc(8);
 
@@ -60,17 +78,15 @@ void kernel_main(void) {
   uint32_t d = kmalloc(12);
   printf("d = %x\n", d);
 
-  fs_root = initialize_initrd(initrd_location);
   traverse_initrd();
 
-  //  printf("Causing a GPF fault here (firing the interrupt):");
+  printf("That's all folks\n");
 
-  //  asm volatile ("int $0x3");
-  for (;;)
-    ;
+  return 0;
 }
 
 void traverse_initrd() {
+  asm volatile("cli");
   int i = 0;
   struct dirent* node = 0;
   while ((node = readdir_fs(fs_root, i)) != 0) {
@@ -85,4 +101,7 @@ void traverse_initrd() {
 
     i++;
   }
+  printf("\n");
+
+  asm volatile("sti");
 }

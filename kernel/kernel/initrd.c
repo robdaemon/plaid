@@ -70,19 +70,41 @@ fs_node_t* initialize_initrd(uint32_t location) {
 
   // set up the root directory
   initrd_root = (fs_node_t*)kmalloc(sizeof(fs_node_t));
-  memset(initrd_root, 0, sizeof(fs_node_t));
+  //memset(initrd_root, 0, sizeof(fs_node_t));
   strcpy(initrd_root->name, "initrd");
-  initrd_root->flags = FS_DIRECTORY;
+  initrd_root->mask = 0;
+  initrd_root->uid = 0;
+  initrd_root->gid = 0;
+  initrd_root->inode = 0;
+  initrd_root->length = 0;
+  initrd_root->flags = FS_DIRECTORY;  
+  initrd_root->read = 0;
+  initrd_root->write = 0;
+  initrd_root->open = 0;
+  initrd_root->close = 0;
   initrd_root->readdir = &initrd_readdir;
   initrd_root->finddir = &initrd_finddir;
+  initrd_root->ptr = 0;
+  initrd_root->impl = 0;
 
   // set up the devices directory
   initrd_devices = (fs_node_t*)kmalloc(sizeof(fs_node_t));
-  memset(initrd_devices, 0, sizeof(fs_node_t));
+  //memset(initrd_devices, 0, sizeof(fs_node_t));
   strcpy(initrd_devices->name, "devices");
-  initrd_devices->flags = FS_DIRECTORY;
+  initrd_devices->mask = 0;
+  initrd_devices->uid = 0;
+  initrd_devices->gid = 0;
+  initrd_devices->inode = 0;
+  initrd_devices->length = 0;
+  initrd_devices->flags = FS_DIRECTORY;  
+  initrd_devices->read = 0;
+  initrd_devices->write = 0;
+  initrd_devices->open = 0;
+  initrd_devices->close = 0;
   initrd_devices->readdir = &initrd_readdir;
   initrd_devices->finddir = &initrd_finddir;
+  initrd_devices->ptr = 0;
+  initrd_devices->impl = 0;
 
   root_nodes =
       (fs_node_t*)kmalloc(sizeof(fs_node_t) * initrd_header->file_count);
